@@ -1,39 +1,74 @@
 package com.mach.machorderrestapi.artifacts.order;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+public class Order {
+  private UUID id;
+  private OrderStatus status;
+  private List<OrderItem> orderItems;
+  private BigDecimal total;
 
-abstract class OrderProps {
-  protected Long id;
-  protected double total;
-  protected String customerId;
-  protected String orderStatus;
-  protected LocalDateTime orderPlacedIn;
+  public Order(OrderProps props) {
+    this.id = props.getId();
+    this.status = props.getStatus();
+    this.orderItems = props.getOrderItems();
+    this.total = props.getTotal();
+  }
+
+  public static class OrderProps {
+    private UUID id;
+    private OrderStatus status;
+    private List<OrderItem> orderItems;
+    private BigDecimal total;
+
+    public OrderProps(UUID id, OrderStatus status, List<OrderItem> orderItems, BigDecimal total) {
+      this.id = id;
+      this.status = status;
+      this.orderItems = orderItems;
+      this.total = total;
+    }
+
+    public UUID getId() {
+      return id;
+    }
+
+    public OrderStatus getStatus() {
+      return status;
+    }
+
+    public List<OrderItem> getOrderItems() {
+      return orderItems;
+    }
+
+    public BigDecimal getTotal() {
+      return total;
+    }
+  }
+
+  // Getters para os campos
+  public UUID getId() {
+    return id;
+  }
+
+  public OrderStatus getStatus() {
+    return status;
+  }
+
+  public List<OrderItem> getOrderItems() {
+    return orderItems;
+  }
+
+  public BigDecimal getTotal() {
+    return total;
+  }
 }
 
-public class Order extends OrderProps implements Serializable {  
-  public Order() {
-    super();
-  }
+enum OrderStatus {
+  // Definir os diferentes status de pedido, se necessário
+}
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  protected Long id;
-
-  protected double total;
-  protected String customerId;
-  protected String orderStatus;
-  protected LocalDateTime orderPlacedIn;
-  
-  public void setId(Long id) {
-    super.id = id;
-  }
-
-  public Long getId() {
-    return super.id;
-  }
+class OrderItem {
+  // Definir a classe OrderItem, se necessário
 }
