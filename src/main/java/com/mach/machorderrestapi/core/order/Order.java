@@ -1,9 +1,10 @@
-package com.mach.machorderrestapi.artifacts.order;
+package com.mach.machorderrestapi.core.order;
 
 import com.mach.machorderrestapi.common.base.BaseModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +40,18 @@ public class Order extends BaseModel {
 
   public BigDecimal getTotal() {
     return total;
+  }
+
+  public static Order factory() {
+    var order = new OrderProps(UUID.randomUUID(),
+      true,
+      LocalDateTime.now(),
+      LocalDateTime.now(),
+      OrderStatus.ORDER_PLACED,
+      new ArrayList<>(),
+      null
+    );
+    return new Order(order);
   }
 }
 

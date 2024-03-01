@@ -1,7 +1,7 @@
-package com.mach.machorderrestapi.artifacts.order.service;
+package com.mach.machorderrestapi.core.order.service;
 
-import com.mach.machorderrestapi.artifacts.order.Order;
-import com.mach.machorderrestapi.artifacts.order.repository.OrderRepositoryContract;
+import com.mach.machorderrestapi.core.order.Order;
+import com.mach.machorderrestapi.core.order.repository.OrderRepositoryContract;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ public class OrderService {
     }
 
     public UUID createOrder() {
-        final Order order =  new Order();
+        final Order order =  Order.factory();
         orderRepositoryContract.save(order);
         return order.getId();
     }

@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.artifacts.order;
+package com.mach.machorderrestapi.core.order;
 
 public enum OrderStatus {
     ORDER_PLACED("PEDIDO_REALIZADO"),
@@ -10,7 +10,7 @@ public enum OrderStatus {
     private final String value;
 
     OrderStatus(String value) {
-        this.value = value;
+      this.value = value;
     }
 
     public String getValue() {
