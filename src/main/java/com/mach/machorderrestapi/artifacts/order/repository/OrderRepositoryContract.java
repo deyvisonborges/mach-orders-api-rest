@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface OrderRepositoryContract {
     Optional<Order> findById(UUID id);
-    Order save(Order order);
+    void save(Order order);
 }

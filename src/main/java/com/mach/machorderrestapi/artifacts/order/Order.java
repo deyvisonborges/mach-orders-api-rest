@@ -1,56 +1,33 @@
 package com.mach.machorderrestapi.artifacts.order;
 
+import com.mach.machorderrestapi.common.base.BaseModel;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class Order {
-  private UUID id;
-  private OrderStatus status;
-  private List<OrderItem> orderItems;
-  private BigDecimal total;
+public class Order extends BaseModel {
+  private final OrderStatus status;
+  private final List<OrderItem> orderItems;
+  private final BigDecimal total;
 
   public Order(OrderProps props) {
-    this.id = props.getId();
-    this.status = props.getStatus();
-    this.orderItems = props.getOrderItems();
-    this.total = props.getTotal();
+    super(props.id, props.active, props.createdAt, props.updatedAt);
+    this.status = props.status();
+    this.orderItems = props.orderItems();
+    this.total = props.total();
   }
 
-  public static class OrderProps {
-    private UUID id;
-    private OrderStatus status;
-    private List<OrderItem> orderItems;
-    private BigDecimal total;
-
-    public OrderProps(UUID id, OrderStatus status, List<OrderItem> orderItems, BigDecimal total) {
-      this.id = id;
-      this.status = status;
-      this.orderItems = orderItems;
-      this.total = total;
-    }
-
-    public UUID getId() {
-      return id;
-    }
-
-    public OrderStatus getStatus() {
-      return status;
-    }
-
-    public List<OrderItem> getOrderItems() {
-      return orderItems;
-    }
-
-    public BigDecimal getTotal() {
-      return total;
-    }
-  }
-
-  // Getters para os campos
-  public UUID getId() {
-    return id;
-  }
+  public record OrderProps(
+    UUID id,
+    Boolean active,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt,
+    OrderStatus status,
+    List<OrderItem> orderItems,
+    BigDecimal total
+  ) {}
 
   public OrderStatus getStatus() {
     return status;
@@ -65,10 +42,3 @@ public class Order {
   }
 }
 
-enum OrderStatus {
-  // Definir os diferentes status de pedido, se necessário
-}
-
-class OrderItem {
-  // Definir a classe OrderItem, se necessário
-}
