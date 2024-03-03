@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryBaseRepository<M> {
-    public List<M> items = new ArrayList<>();
+    public final List<M> items = new ArrayList<>();
 
     public M createOne(M entity) {
         this.items.add(entity);
