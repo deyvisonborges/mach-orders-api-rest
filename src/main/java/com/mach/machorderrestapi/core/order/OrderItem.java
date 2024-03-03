@@ -13,7 +13,7 @@ import java.util.UUID;
  * integrante do Order e não são acessíveis diretamente fora do contexto do Order.
  * */
 public class OrderItem extends BaseModel {
-		private  UUID productId;
+		private UUID productId;
 		private BigDecimal price;
 		private int quantity;
 
