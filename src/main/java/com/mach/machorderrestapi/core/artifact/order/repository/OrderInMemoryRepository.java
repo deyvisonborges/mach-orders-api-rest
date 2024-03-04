@@ -1,7 +1,7 @@
-package com.mach.machorderrestapi.core.order.repository;
+package com.mach.machorderrestapi.core.artifact.order.repository;
 
 import com.mach.machorderrestapi.common.base.InMemoryBaseRepository;
-import com.mach.machorderrestapi.core.order.Order;
+import com.mach.machorderrestapi.core.artifact.order.Order;
 
 import java.util.Optional;
 import java.util.UUID;

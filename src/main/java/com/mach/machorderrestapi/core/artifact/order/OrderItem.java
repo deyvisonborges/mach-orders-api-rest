@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.core.order;
+package com.mach.machorderrestapi.core.artifact.order;
 
 import com.mach.machorderrestapi.common.base.BaseModel;
 

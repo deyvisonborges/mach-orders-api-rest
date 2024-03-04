@@ -1,13 +1,11 @@
-package com.mach.machorderrestapi.app.database.repository.order.entity;
+package com.mach.machorderrestapi.app.persistence.order.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,10 +13,8 @@ import java.util.UUID;
 @Table(name = "orders")
 public class OrderJPAEntity implements Serializable {
 	@Id
-	@UuidGenerator
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "id", nullable = false)
-	@JdbcTypeCode(SqlTypes.UUID)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", updatable = false, unique = true, nullable = false)
 	private UUID id;
 
 	@Column(nullable = false)
@@ -40,5 +36,5 @@ public class OrderJPAEntity implements Serializable {
 	private LocalDateTime updatedAt;
 
 	@OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<OrderItemJPAEntity> items;
+	private List<OrderItemJPAEntity> items = new ArrayList<>();
 }

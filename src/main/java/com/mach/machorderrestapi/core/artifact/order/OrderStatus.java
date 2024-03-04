@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.core.order;
+package com.mach.machorderrestapi.core.artifact.order;
 
 public enum OrderStatus {
     ORDER_PLACED("PEDIDO_REALIZADO"),
