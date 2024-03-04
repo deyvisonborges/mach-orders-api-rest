@@ -1,7 +1,7 @@
-package com.mach.machorderrestapi.app.persistence.order;
+package com.mach.machorderrestapi.app.persistence.order.springjpa;
 
 //import com.mach.machorderrestapi.app.database.repository.order.entity.OrderItemJPAEntity;
-import com.mach.machorderrestapi.app.persistence.order.entity.OrderJPAEntity;
+import com.mach.machorderrestapi.app.persistence.order.springjpa.OrderJPAEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

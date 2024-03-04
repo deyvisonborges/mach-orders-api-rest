@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.app.persistence.order.entity;
+package com.mach.machorderrestapi.app.persistence.order.springjpa;
 
 import jakarta.persistence.*;
 
