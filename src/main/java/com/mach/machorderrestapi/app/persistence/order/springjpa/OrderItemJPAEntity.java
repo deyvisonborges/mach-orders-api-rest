@@ -24,7 +24,6 @@ public class OrderItemJPAEntity implements Serializable {
 	@Column(nullable = false)
 	private int quantity;
 
-	// Optional attributes
 	private Boolean active;
 
 	@ManyToOne(fetch = FetchType.LAZY)

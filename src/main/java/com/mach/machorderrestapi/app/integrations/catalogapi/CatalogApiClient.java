@@ -1,35 +1,32 @@
 package com.mach.machorderrestapi.app.integrations.catalogapi;
 
-import com.mach.machorderrestapi.core.artifact.order.Order;
+import com.mach.machorderrestapi.app.integrations.catalogapi.dto.ProductDTO;
+import com.mach.machorderrestapi.shared.exception.IntegrationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.reactive.function.client.WebClientException;
+import reactor.core.publisher.Flux;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CatalogApiClient {
 	private final WebClient webClient;
 
-	public CatalogApiClient(WebClient webClient) {
-		this.webClient = webClient;
+	public CatalogApiClient(WebClient.Builder builder) {
+		this.webClient = builder.baseUrl("https://localhost:3000/graphql").build();
 	}
-//
-//	private Mono<?> handleResponse(ClientResponse response) {
-//
-//		if (response.statusCode().is2xxSuccessful()) {
-//			return response.bodyToMono(null);
-//		}
-//		else if (response.statusCode().is4xxClientError()) {
-//			// Handle client errors (e.g., 404 Not Found)
-//			return Mono.error(new EmployeeNotFoundException("Employee not found"));
-//		}
-//		else if (response.statusCode().is5xxServerError()) {
-//			// Handle server errors (e.g., 500 Internal Server Error)
-//			return Mono.error(new RuntimeException("Server error"));
-//		}
-//		else {
-//			// Handle other status codes as needed
-//			return Mono.error(new RuntimeException("Unexpected error"));
-//		}
-//	}
+
+	public Flux<ProductDTO> getProductsByIds(List<UUID> ids) {
+		try {
+			return webClient.post()
+					.uri("/")
+					.bodyValue("{\"query\":\"{ products { id name price } }\"}")
+					.retrieve()
+					.bodyToFlux(ProductDTO.class);
+		} catch (WebClientException e) {
+			throw new IntegrationException(e.getMessage());
+		}
+	}
 }

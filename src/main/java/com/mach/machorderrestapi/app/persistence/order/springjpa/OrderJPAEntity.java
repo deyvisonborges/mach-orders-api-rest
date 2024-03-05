@@ -26,7 +26,6 @@ public class OrderJPAEntity implements Serializable {
 	@Column(name = "customer_id", nullable = false)
 	private UUID customerId;
 
-	// Optional attributes
 	private Boolean active;
 
 	@Column(name = "created_at")

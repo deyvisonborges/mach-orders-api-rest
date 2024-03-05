@@ -31,4 +31,11 @@ public class ExceptionHandlerAdvice {
 				new ErrorResponseRecord(n.getMessage(), HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.value())
 		);
 	}
+
+	@ExceptionHandler(InstantiationException.class)
+	public ResponseEntity<ErrorResponseRecord> integrationException(InstantiationException n) {
+		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(
+				new ErrorResponseRecord(n.getMessage(), HttpStatus.BAD_GATEWAY, HttpStatus.BAD_GATEWAY.value())
+		);
+	}
 }
