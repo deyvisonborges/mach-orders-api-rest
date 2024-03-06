@@ -77,8 +77,8 @@ public class Order extends BaseModel {
     return new Order(order);
   }
 
-  private void addOrderItem(OrderItem.OrderItemRecord props) {
-    this.orderItems.add(new OrderItem(props));
+  public void addOrderItem(OrderItem props) {
+    this.orderItems.add(props);
   }
 
 }
