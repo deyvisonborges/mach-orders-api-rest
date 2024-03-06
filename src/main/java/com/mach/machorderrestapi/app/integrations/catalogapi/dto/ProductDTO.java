@@ -7,5 +7,5 @@ public record ProductDTO(
 	UUID id,
 	String name,
 	String description,
-	BigDecimal price
+	BigDecimal salePrice
 ) {}

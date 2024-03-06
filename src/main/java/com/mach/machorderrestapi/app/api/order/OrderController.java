@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/orders")
@@ -27,8 +26,8 @@ public class OrderController {
 	}
 
 	@GetMapping("/test")
-	public Flux<ProductDTO> test() {
-		List<UUID> ids = List.of(UUID.randomUUID());
+	public Mono<List<ProductDTO>> test() {
+		List<String> ids = List.of("f2b6bebe-013f-4522-a653-b2672f732e50");
 		return catalogApiClient.getProductsByIds(ids);
 	}
 

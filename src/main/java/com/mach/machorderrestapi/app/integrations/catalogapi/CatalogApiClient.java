@@ -2,31 +2,53 @@ package com.mach.machorderrestapi.app.integrations.catalogapi;
 
 import com.mach.machorderrestapi.app.integrations.catalogapi.dto.ProductDTO;
 import com.mach.machorderrestapi.shared.exception.IntegrationException;
+
+import org.springframework.graphql.client.HttpGraphQlClient;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CatalogApiClient {
-	private final WebClient webClient;
+	private final HttpGraphQlClient graphQlClient;
 
 	public CatalogApiClient(WebClient.Builder builder) {
-		this.webClient = builder.baseUrl("https://localhost:3000/graphql").build();
+		WebClient webClient = builder.baseUrl("http://localhost:3000/graphql").build();
+		this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
 	}
 
-	public Flux<ProductDTO> getProductsByIds(List<UUID> ids) {
+	@QueryMapping("getProductsByIds")
+	public Mono<List<ProductDTO>> getProductsByIds(List<String> ids) {
+		StringBuilder queryBuilder = new StringBuilder("query { findByIds(input: [");
+		for (int i = 0; i < ids.size(); i++) {
+			queryBuilder.append('"').append(ids.get(i)).append('"');
+			if (i < ids.size() - 1) {
+				queryBuilder.append(", ");
+			}
+		}
+		queryBuilder.append("]) { ... on SimpleProductOutput { name\n")
+				.append(" salePrice\n")
+				.append(" description } } }");
+		String query = queryBuilder.toString();
+
 		try {
-			return webClient.post()
-					.uri("/")
-					.bodyValue("{\"query\":\"{ products { id name price } }\"}")
-					.retrieve()
-					.bodyToFlux(ProductDTO.class);
+			return graphQlClient.document(query)
+				.retrieve("findByIds")
+				.toEntityList(ProductDTO.class);
 		} catch (WebClientException e) {
 			throw new IntegrationException(e.getMessage());
 		}
 	}
+
+//	@Bean
+//	CommandLineRunner runProductsByIds() {
+//		return args -> {
+////			Mono<List<ProductDTO>> products = this.getProductsByIds(List.of(UUID.randomUUID().toString()));
+//			this.getProductsByIds(List.of(UUID.randomUUID().toString()));
+//		};
+//	}
 }
