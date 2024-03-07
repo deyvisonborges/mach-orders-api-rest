@@ -2,12 +2,10 @@ package com.mach.machorderrestapi.core.artifact.order;
 
 import com.mach.machorderrestapi.common.base.BaseModel;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -19,33 +17,16 @@ import java.util.UUID;
 
 public class Order extends BaseModel {
   private OrderStatus status;
-  private List<OrderItem> orderItems;
+  private List<OrderItem> orderItems = new ArrayList<>();
   private BigDecimal total;
   private UUID customerId;
 
-  public Order(OrderRecord props) {
-    super(
-      props.id().orElse(UUID.randomUUID()),
-      props.active().orElse(true),
-      props.createdAt().orElse(LocalDateTime.now()),
-      props.updatedAt().orElse(LocalDateTime.now())
-    );
-    this.status = props.status;
-    this.orderItems = props.orderItems.isEmpty() ? new ArrayList<>() : props.orderItems;
-    this.total = props.total;
-    this.customerId = props.customerId;
+  public Order(OrderStatus status, BigDecimal total, UUID customerId) {
+    super(UUID.randomUUID(), true, LocalDateTime.now(), LocalDateTime.now());
+    this.status = status;
+    this.total = total;
+    this.customerId = customerId;
   }
-
-  public record OrderRecord(
-    Optional<UUID> id,
-    Optional<Boolean> active,
-    Optional<LocalDateTime> createdAt,
-    Optional<LocalDateTime> updatedAt,
-    OrderStatus status,
-    List<OrderItem> orderItems,
-    BigDecimal total,
-    UUID customerId
-  ) {}
 
   public OrderStatus getStatus() {
     return status;
@@ -63,23 +44,19 @@ public class Order extends BaseModel {
     return total;
   }
 
-  public static Order factory() {
-    var order = new OrderRecord(
-      Optional.of(UUID.randomUUID()),
-      Optional.of(true),
-      Optional.of(LocalDateTime.now()),
-      Optional.of(LocalDateTime.now()),
-      OrderStatus.ORDER_PLACED,
-      new ArrayList<>(),
-      null,
-      null
-    );
-    return new Order(order);
+  public UUID getCustomerId() {
+    return customerId;
   }
 
-  public void addOrderItem(OrderItem props) {
-    this.orderItems.add(props);
+  public void addOrderItem(OrderItem orderItem) {
+    orderItems.add(orderItem);
   }
 
+  public void removeOrderItem(OrderItem orderItem) {
+    orderItems.remove(orderItem);
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 }
-

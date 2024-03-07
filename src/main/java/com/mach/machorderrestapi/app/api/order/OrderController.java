@@ -32,7 +32,8 @@ public class OrderController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Order> create(@RequestBody Order.OrderRecord input) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(createOrderService.execute(input));
+//	public ResponseEntity<Order> create(@RequestBody CreateOrderService.CreateOrderServiceInput input) {
+	public ResponseEntity<Order> create() {
+		return ResponseEntity.status(HttpStatus.CREATED).body(createOrderService.execute());
 	}
 }
