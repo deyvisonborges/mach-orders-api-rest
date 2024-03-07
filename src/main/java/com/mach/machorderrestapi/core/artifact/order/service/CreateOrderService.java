@@ -1,6 +1,8 @@
 package com.mach.machorderrestapi.core.artifact.order.service;
 
 import com.mach.machorderrestapi.app.integrations.catalogapi.CatalogApiClient;
+import com.mach.machorderrestapi.app.integrations.identityapi.IdentityApiClient;
+import com.mach.machorderrestapi.app.integrations.identityapi.dto.CustomerDTO;
 import com.mach.machorderrestapi.core.artifact.order.Order;
 import com.mach.machorderrestapi.core.artifact.order.OrderItem;
 import com.mach.machorderrestapi.core.artifact.order.OrderStatus;
@@ -19,10 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class CreateOrderService {
 	private final CatalogApiClient catalogApiClient;
+	private final IdentityApiClient identityApiClient;
 	private final OrderRepositoryContract orderRepositoryContract;
 
-	public CreateOrderService(CatalogApiClient catalogApiClient) {
+	public CreateOrderService(CatalogApiClient catalogApiClient, IdentityApiClient identityApiClient) {
 		this.catalogApiClient = catalogApiClient;
+		this.identityApiClient = identityApiClient;
 		this.orderRepositoryContract = new OrderInMemoryRepository();
 	}
 
@@ -33,11 +37,14 @@ public class CreateOrderService {
 		 UUID customerId
 	){}
 
-//	public Order execute(CreateOrderServiceInput input) {
-	public Order execute() {
+	public Order execute(CreateOrderServiceInput input) {
+//	public Order execute() {
 		var orderItems = new ArrayList<OrderItem>();
 		orderItems.add(new OrderItem(UUID.fromString("f2b6bebe-013f-4522-a653-b2672f732e50"), new BigDecimal(10), 1));
-		var order = new Order(OrderStatus.ORDER_PLACED, new BigDecimal("0.254523234"), UUID.randomUUID());
+		CustomerDTO customer = this.identityApiClient.getCustomerById(String.valueOf(input.customerId())).block();
+
+		assert customer != null;
+		var order = new Order(OrderStatus.ORDER_PLACED, new BigDecimal("0.254523234"), customer.id());
 		this.catalogApiClient.getProductsByIds(
 					orderItems
 					.stream()
@@ -62,6 +69,5 @@ public class CreateOrderService {
 		orderRepositoryContract.save(order);
 		return order;
 	}
-
 }
 
