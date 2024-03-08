@@ -50,4 +50,7 @@ public class OrderItemJPAEntity implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public void setOrder(OrderJPAEntity order) {
+		this.order = order;
+	}
 }

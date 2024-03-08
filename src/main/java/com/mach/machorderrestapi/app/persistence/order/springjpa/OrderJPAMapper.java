@@ -23,7 +23,7 @@ public class OrderJPAMapper {
 				order.getUpdatedAt()))
 			.collect(Collectors.toList());
 
-		return new OrderJPAEntity(
+		var orderJPAEntity = new OrderJPAEntity(
 			order.getId(),
 			order.getStatus().toString(),
 			order.getTotal(),
@@ -33,5 +33,9 @@ public class OrderJPAMapper {
 			order.getUpdatedAt(),
 			orderItems
 		);
+
+		orderItems.forEach(item -> item.setOrder(orderJPAEntity));
+
+		return orderJPAEntity;
 	}
 }
