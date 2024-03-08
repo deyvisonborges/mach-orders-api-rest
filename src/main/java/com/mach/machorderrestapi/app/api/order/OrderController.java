@@ -3,7 +3,7 @@ package com.mach.machorderrestapi.app.api.order;
 import com.mach.machorderrestapi.app.integrations.catalogapi.CatalogApiClient;
 import com.mach.machorderrestapi.app.integrations.catalogapi.dto.ProductDTO;
 import com.mach.machorderrestapi.core.artifact.order.Order;
-import com.mach.machorderrestapi.core.artifact.order.service.CreateOrderService;
+import com.mach.machorderrestapi.app.api.order.service.CreateOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +32,7 @@ public class OrderController {
 	}
 
 	@GetMapping
-//	public ResponseEntity<Order> create(@RequestBody CreateOrderService.CreateOrderServiceInput input) {
-	public ResponseEntity<Order> create() {
-		return ResponseEntity.status(HttpStatus.CREATED).body(createOrderService.execute());
+	public ResponseEntity<Order> create(@RequestBody CreateOrderService.CreateOrderServiceInput input) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(createOrderService.execute(input));
 	}
 }

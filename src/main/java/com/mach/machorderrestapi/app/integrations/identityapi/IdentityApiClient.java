@@ -14,16 +14,19 @@ public class IdentityApiClient {
 	private final WebClient webClient;
 
 	public IdentityApiClient(WebClient.Builder builder) {
-		this.webClient = builder.baseUrl("http://localhost:3000/api").build();
+		this.webClient = builder.baseUrl("http://localhost:4000/api/identity").build();
 	}
 
 	public Mono<CustomerDTO> getCustomerById(String id) {
 		try {
-			return this.webClient.get()
-				.uri("/" + id)
+			var customer = this.webClient.get()
+				.uri("/management/user/" + id)
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.bodyToMono(CustomerDTO.class);
+
+			System.out.println(customer);
+			return customer;
 		} catch (WebClientException e) {
 			throw new IntegrationException(e.getMessage());
 		}

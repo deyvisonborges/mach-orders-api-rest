@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
@@ -38,4 +40,13 @@ public class ExceptionHandlerAdvice {
 				new ErrorResponseRecord(n.getMessage(), HttpStatus.BAD_GATEWAY, HttpStatus.BAD_GATEWAY.value())
 		);
 	}
+
+	@ExceptionHandler(WebClientResponseException.class)
+	public ResponseEntity<ErrorResponseRecord> webClientResponseException(WebClientResponseException n) {
+		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(
+				new ErrorResponseRecord(n.getMessage(), HttpStatus.BAD_GATEWAY, HttpStatus.BAD_GATEWAY.value())
+		);
+	}
+
+
 }
