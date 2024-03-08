@@ -1,5 +1,6 @@
 package com.mach.machorderrestapi.app.integrations.identityapi;
 
+import com.mach.machorderrestapi.app.integrations.IntegrationClients;
 import com.mach.machorderrestapi.app.integrations.identityapi.dto.CustomerDTO;
 import com.mach.machorderrestapi.shared.exception.IntegrationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,15 +15,22 @@ import reactor.core.publisher.Mono;
 @Service
 public class IdentityApiClient {
 	private final WebClient webClient;
-
-	@Value("${integration.url.api.identity}")
-	private String url;
+	private IntegrationClients integrationClients;
 
 	@Value("${integration.security.jwt.secret}")
 	private String token;
 
 	public IdentityApiClient(WebClient.Builder builder) {
-		this.webClient = builder.baseUrl(url)
+		// TODO -> Assume that server return 401 code when token expired.
+//		WebClient.builder().filter((request, next) -> {
+//			final Mono<ClientResponse> response = next.exchange(request);
+//			return response.filter(clientResponse -> clientResponse.statusCode() != HttpStatus.UNAUTHORIZED)
+//					// handle 401 Unauthorized (token expired)
+//					.switchIfEmpty(next.exchange(ClientRequest.from(request)
+//							.headers(httpHeaders -> httpHeaders.setBearerAuth(getNewToken()))
+//							.build()));
+//		}).build();
+		this.webClient = builder.baseUrl(this.integrationClients.getIdentityURL())
 			.filter(((request, next) -> {
 				ClientRequest newRequest = ClientRequest.from(request)
 					.header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
