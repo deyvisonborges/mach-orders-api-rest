@@ -35,4 +35,19 @@ public class OrderItemJPAEntity implements Serializable {
 
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
+
+	public OrderItemJPAEntity() {
+	}
+
+	public OrderItemJPAEntity(UUID id, UUID productId, BigDecimal price, int quantity, Boolean active, OrderJPAEntity order, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		this.id = id;
+		this.productId = productId;
+		this.price = price;
+		this.quantity = quantity;
+		this.active = active;
+		this.order = order;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
 }

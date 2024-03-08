@@ -36,4 +36,19 @@ public class OrderJPAEntity implements Serializable {
 
 	@OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<OrderItemJPAEntity> items = new ArrayList<>();
+
+	public OrderJPAEntity() {
+	}
+
+	public OrderJPAEntity(UUID id, String status, BigDecimal total, UUID customerId, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, List<OrderItemJPAEntity> items) {
+		this.id = id;
+		this.status = status;
+		this.total = total;
+		this.customerId = customerId;
+		this.active = active;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.items = items;
+	}
+
 }
