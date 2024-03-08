@@ -3,22 +3,48 @@ package com.mach.machorderrestapi.app.integrations.catalogapi;
 import com.mach.machorderrestapi.app.integrations.catalogapi.dto.ProductDTO;
 import com.mach.machorderrestapi.shared.exception.IntegrationException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CatalogApiClient {
 	private final HttpGraphQlClient graphQlClient;
 
+	@Value("${integration.url.api.catalog}")
+	private String url;
+
 	public CatalogApiClient(WebClient.Builder builder) {
-		WebClient webClient = builder.baseUrl("http://localhost:3000/graphql").build();
+		WebClient webClient = builder
+			.baseUrl(url)
+			.filter(addJwtHeader())
+			.build();
 		this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
+	}
+
+	private ExchangeFilterFunction addJwtHeader() {
+
+		return (request, next) -> {
+			var jwtToken = Objects.requireNonNull(
+					request.headers().getFirst(HttpHeaders.AUTHORIZATION));
+			if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+				jwtToken = jwtToken.substring(7); // Remove o prefixo "Bearer " para obter somente o token JWT
+			}
+			final String finalJwtToken = jwtToken;
+
+			request.headers().setBearerAuth("Bearer " + finalJwtToken);
+			request.headers().add(HttpHeaders.AUTHORIZATION, "Bearer " + finalJwtToken);
+			return next.exchange(request);
+		};
 	}
 
 	@QueryMapping("getProductsByIds")
