@@ -28,6 +28,7 @@ public class OrderJPAMapper {
 			order.getStatus().toString(),
 			order.getTotal(),
 			order.getCustomerId(),
+			order.getPaymentId(),
 			order.getActive(),
 			order.getCreatedAt(),
 			order.getUpdatedAt(),

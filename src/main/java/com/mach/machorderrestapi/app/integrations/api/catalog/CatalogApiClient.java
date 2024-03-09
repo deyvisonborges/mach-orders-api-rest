@@ -1,6 +1,6 @@
-package com.mach.machorderrestapi.app.integrations.catalogapi;
+package com.mach.machorderrestapi.app.integrations.api.catalog;
 
-import com.mach.machorderrestapi.app.integrations.catalogapi.dto.ProductDTO;
+import com.mach.machorderrestapi.app.integrations.api.catalog.dto.ProductDTO;
 import com.mach.machorderrestapi.shared.exception.IntegrationException;
 
 import org.springframework.beans.factory.annotation.Value;

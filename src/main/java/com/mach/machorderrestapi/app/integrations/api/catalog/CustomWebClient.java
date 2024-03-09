@@ -1,10 +1,8 @@
-package com.mach.machorderrestapi.app.integrations.catalogapi;
+package com.mach.machorderrestapi.app.integrations.api.catalog;
 
-import com.mach.machorderrestapi.app.integrations.identityapi.dto.CustomerDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;

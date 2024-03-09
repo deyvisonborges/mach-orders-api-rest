@@ -20,12 +20,14 @@ public class Order extends BaseModel {
   private List<OrderItem> orderItems = new ArrayList<>();
   private BigDecimal total;
   private UUID customerId;
+  private UUID paymentId;
 
-  public Order(OrderStatus status, BigDecimal total, UUID customerId) {
+  public Order(OrderStatus status, BigDecimal total, UUID customerId, UUID paymentId) {
     super(UUID.randomUUID(), true, LocalDateTime.now(), LocalDateTime.now());
     this.status = status;
     this.total = total;
     this.customerId = customerId;
+    this.paymentId = paymentId;
   }
 
   public OrderStatus getStatus() {
@@ -47,6 +49,8 @@ public class Order extends BaseModel {
   public UUID getCustomerId() {
     return customerId;
   }
+
+  public UUID getPaymentId() {return paymentId;}
 
   public void addOrderItem(OrderItem orderItem) {
     orderItems.add(orderItem);

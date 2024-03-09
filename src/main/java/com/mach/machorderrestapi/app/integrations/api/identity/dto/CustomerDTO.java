@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.app.integrations.identityapi.dto;
+package com.mach.machorderrestapi.app.integrations.api.identity.dto;
 
 import java.util.UUID;
 

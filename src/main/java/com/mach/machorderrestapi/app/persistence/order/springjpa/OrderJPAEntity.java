@@ -26,6 +26,9 @@ public class OrderJPAEntity implements Serializable {
 	@Column(name = "customer_id", nullable = false)
 	private UUID customerId;
 
+	@Column(name = "payment_id", nullable = false)
+	private UUID paymentId;
+
 	private Boolean active;
 
 	@Column(name = "created_at")
@@ -40,15 +43,15 @@ public class OrderJPAEntity implements Serializable {
 	public OrderJPAEntity() {
 	}
 
-	public OrderJPAEntity(UUID id, String status, BigDecimal total, UUID customerId, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, List<OrderItemJPAEntity> items) {
+	public OrderJPAEntity(UUID id, String status, BigDecimal total, UUID customerId, UUID paymentId, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, List<OrderItemJPAEntity> items) {
 		this.id = id;
 		this.status = status;
 		this.total = total;
 		this.customerId = customerId;
+		this.paymentId = paymentId;
 		this.active = active;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.items = items;
 	}
-
 }

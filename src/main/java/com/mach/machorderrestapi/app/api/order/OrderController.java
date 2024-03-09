@@ -1,7 +1,7 @@
 package com.mach.machorderrestapi.app.api.order;
 
-import com.mach.machorderrestapi.app.integrations.catalogapi.CatalogApiClient;
-import com.mach.machorderrestapi.app.integrations.catalogapi.dto.ProductDTO;
+import com.mach.machorderrestapi.app.integrations.api.catalog.CatalogApiClient;
+import com.mach.machorderrestapi.app.integrations.api.catalog.dto.ProductDTO;
 import com.mach.machorderrestapi.core.artifact.order.Order;
 import com.mach.machorderrestapi.app.api.order.service.CreateOrderService;
 import org.springframework.http.HttpStatus;

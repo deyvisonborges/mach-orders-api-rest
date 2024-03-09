@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.app.integrations.catalogapi.dto;
+package com.mach.machorderrestapi.app.integrations.api.catalog.dto;
 
 import java.math.BigDecimal;
 import java.util.UUID;

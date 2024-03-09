@@ -1,8 +1,8 @@
 package com.mach.machorderrestapi.app.api.order.service;
 
-import com.mach.machorderrestapi.app.integrations.catalogapi.CatalogApiClient;
-import com.mach.machorderrestapi.app.integrations.identityapi.IdentityApiClient;
-import com.mach.machorderrestapi.app.integrations.identityapi.dto.CustomerDTO;
+import com.mach.machorderrestapi.app.integrations.api.catalog.CatalogApiClient;
+import com.mach.machorderrestapi.app.integrations.api.identity.IdentityApiClient;
+import com.mach.machorderrestapi.app.integrations.api.identity.dto.CustomerDTO;
 import com.mach.machorderrestapi.app.persistence.order.springjpa.OrderJPAMapper;
 import com.mach.machorderrestapi.app.persistence.order.springjpa.OrderJPARepository;
 import com.mach.machorderrestapi.core.artifact.order.Order;
@@ -13,7 +13,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class CreateOrderService {
 	public Order execute(CreateOrderServiceInput input) {
 		CustomerDTO customer = this.identityApiClient.getCustomerById(input.customerId().toString()).block();
 		assert customer != null;
-		var order = new Order(input.status, new BigDecimal(String.valueOf(input.total)), customer.id());
+		var order = new Order(input.status, new BigDecimal(String.valueOf(input.total)), customer.id(), UUID.randomUUID());
 
 		this.catalogApiClient.getProductsByIds(
 					input.orderItemsIds
