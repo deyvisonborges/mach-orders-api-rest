@@ -56,4 +56,19 @@ public class OrderJPAEntity implements Serializable {
 
 	public OrderJPAEntity() {
 	}
+
+	public OrderJPAEntity(UUID id, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus status, Set<OrderItemJPAEntity> items, UUID customerId, Set<String> paymentsIds, double subTotal, double shippingFee, double discount, double total) {
+		this.id = id;
+		this.active = active;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.status = status;
+		this.items = items;
+		this.customerId = customerId;
+		this.paymentsIds = paymentsIds;
+		this.subTotal = subTotal;
+		this.shippingFee = shippingFee;
+		this.discount = discount;
+		this.total = total;
+	}
 }

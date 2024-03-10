@@ -3,6 +3,7 @@ package com.mach.machorderrestapi.app.persistence.order.springjpa;
 import com.mach.machorderrestapi.core.artifact.order.Order;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OrderJPAMapper {
@@ -25,14 +26,17 @@ public class OrderJPAMapper {
 
 		var orderJPAEntity = new OrderJPAEntity(
 			order.getId(),
-			order.getStatus().toString(),
-			order.getTotal(),
-			order.getCustomerId(),
-			order.getPaymentsIds(),
 			order.getActive(),
 			order.getCreatedAt(),
 			order.getUpdatedAt(),
-			orderItems
+			order.getStatus(),
+			(Set<OrderItemJPAEntity>) orderItems,
+			order.getCustomerId(),
+			order.getPaymentsIds(),
+			order.getSubTotal(),
+			order.getShippingFee(),
+			order.getDiscount(),
+			order.getTotal()
 		);
 
 		orderItems.forEach(item -> item.setOrder(orderJPAEntity));
