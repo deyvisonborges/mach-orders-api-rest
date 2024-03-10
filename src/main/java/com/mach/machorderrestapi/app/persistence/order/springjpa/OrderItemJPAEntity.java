@@ -10,11 +10,25 @@ import java.util.UUID;
 @Entity
 @Table(name = "order_items")
 public class OrderItemJPAEntity implements Serializable {
+	/*
+	* Default Attributes
+	* */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", updatable = false, unique = true, nullable = false)
 	private UUID id;
 
+	private Boolean active;
+
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
+
+	/*
+	* Required Attributes
+	* */
 	@Column(name = "product_id", nullable = false)
 	private UUID productId;
 
@@ -24,17 +38,9 @@ public class OrderItemJPAEntity implements Serializable {
 	@Column(nullable = false)
 	private int quantity;
 
-	private Boolean active;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id", nullable = true)
 	private OrderJPAEntity order;
-
-	@Column(name = "created_at")
-	private LocalDateTime createdAt;
-
-	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
 
 	public OrderItemJPAEntity() {
 	}

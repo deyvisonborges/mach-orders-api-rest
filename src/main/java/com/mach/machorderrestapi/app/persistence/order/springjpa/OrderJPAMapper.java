@@ -11,7 +11,7 @@ public class OrderJPAMapper {
 	}
 
 	public static OrderJPAEntity toJPAEntity(Order order) {
-		List<OrderItemJPAEntity> orderItems = order.getOrderItems().stream()
+		List<OrderItemJPAEntity> orderItems = order.getItems().stream()
 			.map(item -> new OrderItemJPAEntity(
 				item.getId(),
 				item.getProductId(),
@@ -28,7 +28,7 @@ public class OrderJPAMapper {
 			order.getStatus().toString(),
 			order.getTotal(),
 			order.getCustomerId(),
-			order.getPaymentId(),
+			order.getPaymentsIds(),
 			order.getActive(),
 			order.getCreatedAt(),
 			order.getUpdatedAt(),
