@@ -22,8 +22,8 @@ public class Order extends BaseModel {
   private double discount;
   private double total;
 
-  public Order(UUID id, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus status, Set<OrderItem> items, UUID customerId, Set<String> paymentsIds, double subTotal, double shippingFee, double discount, double total) {
-    super(id, active, createdAt, updatedAt);
+  public Order(OrderStatus status, Set<OrderItem> items, UUID customerId, Set<String> paymentsIds, double subTotal, double shippingFee, double discount, double total) {
+    super(UUID.randomUUID(), true, LocalDateTime.now(), LocalDateTime.now());
     this.status = status;
     this.items = items;
     this.customerId = customerId;
@@ -78,5 +78,37 @@ public class Order extends BaseModel {
 
   public void setId(UUID id) {
     this.id = id;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
+  }
+
+  public void setItems(Set<OrderItem> items) {
+    this.items = items;
+  }
+
+  public void setCustomerId(UUID customerId) {
+    this.customerId = customerId;
+  }
+
+  public void setPaymentsIds(Set<String> paymentsIds) {
+    this.paymentsIds = paymentsIds;
+  }
+
+  public void setSubTotal(double subTotal) {
+    this.subTotal = subTotal;
+  }
+
+  public void setShippingFee(double shippingFee) {
+    this.shippingFee = shippingFee;
+  }
+
+  public void setDiscount(double discount) {
+    this.discount = discount;
+  }
+
+  public void setTotal(double total) {
+    this.total = total;
   }
 }

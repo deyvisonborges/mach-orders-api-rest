@@ -13,7 +13,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,38 +32,48 @@ public class CreateOrderService {
 	}
 
 	public record CreateOrderServiceInput(
-		 OrderStatus status,
-		 List<String> orderItemsIds,
-		 BigDecimal total,
-		 UUID customerId
+	  OrderStatus status,
+		Set<OrderItem>items,
+		UUID customerId,
+		Set<String> paymentsIds,
+		double subTotal,
+		double shippingFee,
+		double discount,
+		double total
 	){}
 
 	public Order execute(CreateOrderServiceInput input) {
 		CustomerDTO customer = this.identityApiClient.getCustomerById(input.customerId().toString()).block();
 		assert customer != null;
-		var order = new Order(input.status, new BigDecimal(String.valueOf(input.total)), customer.id(), UUID.randomUUID());
 
-		this.catalogApiClient.getProductsByIds(
-					input.orderItemsIds
-					.stream()
-					.map(item -> item.toString())
-					.collect(Collectors.toList())
-		).flatMapMany(Flux::fromIterable)
-				.flatMap(product -> {
-					var orderItem =
-						new OrderItem(
-							product.id(),
-							product.salePrice(),
-							1 // TODO -> add in ProductDTO on CatalogAPI
-						);
-					return Mono.just(orderItem);
-				})
-				.collectList()
-				.subscribe(oi -> {
-					oi.forEach(order::addOrderItem);
-					order.setStatus(OrderStatus.ORDER_PLACED);
-					orderJPARepository.save(OrderJPAMapper.toJPAEntity(order));
-				});
+		var order = new Order(
+			input.status,
+			new HashSet<>(), // items
+			customer.id(),
+			new HashSet<>(), // paymentsIds
+			0.0,
+			0.0,
+			0.0,
+			0.0
+		);
+
+		var products = this.catalogApiClient.getProductsByIds(
+			input.items
+				.stream()
+				.map(OrderItem::toString)
+				.collect(Collectors.toList())
+		).block();
+
+		products.forEach(product -> {
+			order.addOrderItem(
+				new OrderItem(
+					product.id(),
+					product.salePrice(),
+					1 // TODO -> add in ProductDTO on CatalogAPI
+				)
+			);
+		});
+		order.setStatus(OrderStatus.PROCESSING);
 		orderJPARepository.save(OrderJPAMapper.toJPAEntity(order));
 		return order;
 	}
