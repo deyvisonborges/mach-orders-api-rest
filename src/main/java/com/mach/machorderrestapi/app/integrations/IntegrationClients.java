@@ -2,7 +2,9 @@ package com.mach.machorderrestapi.app.integrations;
 
 import com.mach.machorderrestapi.shared.exception.IntegrationException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IntegrationClients {
 	@Value("${integration.url.api.identity}")
 	private String identityURL;

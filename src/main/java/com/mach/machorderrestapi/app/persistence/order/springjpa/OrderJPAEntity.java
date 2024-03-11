@@ -33,14 +33,13 @@ public class OrderJPAEntity implements Serializable {
 	private OrderStatus status;
 
 	@OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
-	@JoinColumn(nullable = false)
 	private Set<OrderItemJPAEntity> items = new HashSet<>();
 
 	@Column(name = "customer_id", nullable = false)
 	private UUID customerId;
 
 	@Column(name = "payments_ids", nullable = false)
-	private Set<String> paymentsIds = new HashSet<>();
+	private Set<UUID> paymentsIds = new HashSet<>();
 
 	@Column(name = "subtotal", nullable = false)
 	private double subTotal;
@@ -57,7 +56,20 @@ public class OrderJPAEntity implements Serializable {
 	public OrderJPAEntity() {
 	}
 
-	public OrderJPAEntity(UUID id, Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus status, Set<OrderItemJPAEntity> items, UUID customerId, Set<String> paymentsIds, double subTotal, double shippingFee, double discount, double total) {
+	public OrderJPAEntity(
+		UUID id,
+		Boolean active,
+		LocalDateTime createdAt,
+		LocalDateTime updatedAt,
+		OrderStatus status,
+		Set<OrderItemJPAEntity> items,
+		UUID customerId,
+		Set<UUID> paymentsIds,
+		double subTotal,
+		double shippingFee,
+		double discount,
+		double total
+	) {
 		this.id = id;
 		this.active = active;
 		this.createdAt = createdAt;

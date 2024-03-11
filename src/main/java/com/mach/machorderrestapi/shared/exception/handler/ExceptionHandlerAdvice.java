@@ -4,6 +4,7 @@ import com.mach.machorderrestapi.shared.exception.BadRequestException;
 import com.mach.machorderrestapi.shared.exception.NotFoundException;
 import com.mach.machorderrestapi.shared.exception.UnauthorizedException;
 import com.mach.machorderrestapi.shared.exception.dto.ErrorResponseRecord;
+import com.mach.machorderrestapi.shared.exception.util.validator.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,5 +49,10 @@ public class ExceptionHandlerAdvice {
 		);
 	}
 
-
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<ErrorResponseRecord> validationException(ValidationException v){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+				new ErrorResponseRecord(v.getMessage(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value())
+		);
+	}
 }

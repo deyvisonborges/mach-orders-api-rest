@@ -16,13 +16,13 @@ public class Order extends BaseModel {
   private OrderStatus status;
   private Set<OrderItem> items;
   private UUID customerId;
-  private Set<String> paymentsIds;
+  private Set<UUID> paymentsIds;
   private double subTotal;
   private double shippingFee;
   private double discount;
   private double total;
 
-  public Order(OrderStatus status, Set<OrderItem> items, UUID customerId, Set<String> paymentsIds, double subTotal, double shippingFee, double discount, double total) {
+  public Order(OrderStatus status, Set<OrderItem> items, UUID customerId, Set<UUID> paymentsIds, double subTotal, double shippingFee, double discount, double total) {
     super(UUID.randomUUID(), true, LocalDateTime.now(), LocalDateTime.now());
     this.status = status;
     this.items = items;
@@ -49,7 +49,7 @@ public class Order extends BaseModel {
     return customerId;
   }
 
-  public Set<String> getPaymentsIds() {
+  public Set<UUID> getPaymentsIds() {
     return paymentsIds;
   }
 
@@ -92,7 +92,7 @@ public class Order extends BaseModel {
     this.customerId = customerId;
   }
 
-  public void setPaymentsIds(Set<String> paymentsIds) {
+  public void setPaymentsIds(Set<UUID> paymentsIds) {
     this.paymentsIds = paymentsIds;
   }
 

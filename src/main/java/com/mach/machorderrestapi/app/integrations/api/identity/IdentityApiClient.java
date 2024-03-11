@@ -15,7 +15,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class IdentityApiClient {
 	private final WebClient webClient;
-	private IntegrationClients integrationClients;
+
+	@Value("${integration.url.api.identity}")
+	private String url; // TODO -> entender pq nao ta funcionando
 
 	@Value("${integration.security.jwt.secret}")
 	private String token;
@@ -30,7 +32,7 @@ public class IdentityApiClient {
 //							.headers(httpHeaders -> httpHeaders.setBearerAuth(getNewToken()))
 //							.build()));
 //		}).build();
-		this.webClient = builder.baseUrl(this.integrationClients.getIdentityURL())
+		this.webClient = builder.baseUrl("http://localhost:4000/api/identity")
 			.filter(((request, next) -> {
 				ClientRequest newRequest = ClientRequest.from(request)
 					.header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
