@@ -8,6 +8,7 @@ import com.mach.machorderrestapi.app.persistence.order.springjpa.OrderJPAReposit
 import com.mach.machorderrestapi.core.artifact.order.Order;
 import com.mach.machorderrestapi.core.artifact.order.OrderItem;
 import com.mach.machorderrestapi.core.artifact.order.OrderStatus;
+import com.mach.machorderrestapi.core.artifact.order.event.OrderCreatedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,11 +19,13 @@ public class CreateOrderService {
 	private final CatalogApiClient catalogApiClient;
 	private final IdentityApiClient identityApiClient;
 	private final OrderJPARepository orderJPARepository;
+	private final OrderCreatedEvent orderCreatedEvent;
 
-	public CreateOrderService(CatalogApiClient catalogApiClient, IdentityApiClient identityApiClient, OrderJPARepository orderJPARepository) {
+	public CreateOrderService(CatalogApiClient catalogApiClient, IdentityApiClient identityApiClient, OrderJPARepository orderJPARepository, OrderCreatedEvent orderCreatedEvent) {
 		this.catalogApiClient = catalogApiClient;
 		this.identityApiClient = identityApiClient;
 		this.orderJPARepository = orderJPARepository;
+		this.orderCreatedEvent = orderCreatedEvent;
 	}
 
 	public record CreateOrderServiceInput(
@@ -37,6 +40,15 @@ public class CreateOrderService {
 	){}
 
 	public Order execute(CreateOrderServiceInput input) {
+		var test = new Order(input.status,
+				new HashSet<>(), // items
+				UUID.randomUUID(),
+				new HashSet<>(), // paymentsIds
+				0.0,
+				0.0,
+				0.0,
+				0.0);
+		this.orderCreatedEvent.execute(test);
 		CustomerDTO customer = this.identityApiClient.getCustomerById(input.customerId().toString()).block();
 		assert customer != null;
 
@@ -69,6 +81,7 @@ public class CreateOrderService {
 		});
 		order.setStatus(OrderStatus.PROCESSING);
 		orderJPARepository.save(OrderJPAMapper.toJPAEntity(order));
+		this.orderCreatedEvent.execute(order);
 		return order;
 	}
 }
