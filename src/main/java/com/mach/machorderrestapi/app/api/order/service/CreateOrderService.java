@@ -40,15 +40,7 @@ public class CreateOrderService {
 	){}
 
 	public Order execute(CreateOrderServiceInput input) {
-		var test = new Order(input.status,
-				new HashSet<>(), // items
-				UUID.randomUUID(),
-				new HashSet<>(), // paymentsIds
-				0.0,
-				0.0,
-				0.0,
-				0.0);
-		this.orderCreatedEvent.execute(test);
+		this.orderCreatedEvent.execute(input);
 		CustomerDTO customer = this.identityApiClient.getCustomerById(input.customerId().toString()).block();
 		assert customer != null;
 
