@@ -1,5 +1,7 @@
 package com.mach.machorderrestapi.app.integrations.api.payments.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 /**
@@ -22,9 +24,14 @@ import java.time.LocalDateTime;
  * ---------------------------
  */
 public record PaymentDTO(
+		@JsonProperty("payment_id")
 		String paymentId,
+
+		@JsonProperty("payment_method")
 		String paymentMethod,
+
 		String value,
+		@JsonProperty("paid_in")
 		LocalDateTime paidIn,
 		String status
 ) { }

@@ -5,16 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-
 @Service
-public class RabbitMqService implements Serializable {
+public class RabbitMqService {
 	private final AmqpTemplate amqpTemplate;
 
 	public RabbitMqService(AmqpTemplate amqpTemplate) {
 		this.amqpTemplate = amqpTemplate;
 	}
-
 
 	public void sendMessage(String queueName, Object message) {
 		String jsonString = null;

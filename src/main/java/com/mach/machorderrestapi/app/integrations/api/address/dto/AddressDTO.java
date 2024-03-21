@@ -1,5 +1,7 @@
 package com.mach.machorderrestapi.app.integrations.api.address.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record AddressDTO(
 	String id,
 	String label,
@@ -7,5 +9,7 @@ public record AddressDTO(
 	String country,
 	String province,
 	String city,
+
+	@JsonProperty("postal_code")
 	String postalCode
 ) { }

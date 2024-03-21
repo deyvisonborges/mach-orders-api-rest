@@ -4,10 +4,10 @@ import com.mach.machorderrestapi.app.message.RabbitMqService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderCreatedEvent {
+public class OrderCreatedEventEmitter {
 	private final RabbitMqService rabbitMqService;
 
-	public OrderCreatedEvent(RabbitMqService rabbitMqService) {
+	public OrderCreatedEventEmitter(RabbitMqService rabbitMqService) {
 		this.rabbitMqService = rabbitMqService;
 	}
 
