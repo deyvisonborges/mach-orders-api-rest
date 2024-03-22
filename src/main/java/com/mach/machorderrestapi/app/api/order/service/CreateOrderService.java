@@ -1,6 +1,7 @@
 package com.mach.machorderrestapi.app.api.order.service;
 
 import com.mach.machorderrestapi.app.integrations.api.catalog.CatalogApiClient;
+import com.mach.machorderrestapi.app.integrations.api.catalog.dto.ProductDTO;
 import com.mach.machorderrestapi.app.integrations.api.identity.IdentityApiClient;
 import com.mach.machorderrestapi.app.integrations.api.identity.dto.CustomerDTO;
 import com.mach.machorderrestapi.app.persistence.order.springjpa.OrderJPAMapper;
@@ -30,7 +31,7 @@ public class CreateOrderService {
 
 	public record CreateOrderServiceInput(
 	  OrderStatus status,
-		Set<OrderItem>items,
+		Set<String>items,
 		UUID customerId,
 		Set<String> paymentsIds,
 		double subTotal,
@@ -40,7 +41,6 @@ public class CreateOrderService {
 	){}
 
 	public Order execute(CreateOrderServiceInput input) {
-		this.orderCreatedEventEmitter.execute(input);
 		CustomerDTO customer = this.identityApiClient.getCustomerById(input.customerId().toString()).block();
 		assert customer != null;
 
@@ -58,18 +58,18 @@ public class CreateOrderService {
 		var products = this.catalogApiClient.getProductsByIds(
 			input.items
 				.stream()
-				.map(OrderItem::toString)
+				.map(item -> item.toString())
 				.collect(Collectors.toList())
 		).block();
 
+
 		products.forEach(product -> {
-			order.addOrderItem(
-				new OrderItem(
-					product.id(),
-					product.salePrice(),
-					1 // TODO -> add in ProductDTO on CatalogAPI
-				)
-			);
+			var orderItem = new OrderItem();
+			orderItem.setProductId(product.id());
+			orderItem.setPrice(product.salePrice());
+			orderItem.setQuantity(1);
+			System.out.println(orderItem);
+			order.addOrderItem(orderItem);
 		});
 		order.setStatus(OrderStatus.ORDER_PLACED);
 		orderJPARepository.save(OrderJPAMapper.toJPAEntity(order));

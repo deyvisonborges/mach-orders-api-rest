@@ -26,16 +26,16 @@ public class CatalogApiClient {
 	public CatalogApiClient(WebClient.Builder builder) {
 		WebClient webClient = builder
 			.baseUrl(url)
-			.filter(addJwtHeader())
+//			.filter(addJwtHeader())
 			.build();
 		this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
 	}
 
 	private ExchangeFilterFunction addJwtHeader() {
-
 		return (request, next) -> {
-			var jwtToken = Objects.requireNonNull(
-					request.headers().getFirst(HttpHeaders.AUTHORIZATION));
+//			var jwtToken = Objects.requireNonNull(
+//					request.headers().getFirst(HttpHeaders.AUTHORIZATION));
+			var jwtToken = request.headers().getFirst(HttpHeaders.AUTHORIZATION);
 			if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
 				jwtToken = jwtToken.substring(7); // Remove o prefixo "Bearer " para obter somente o token JWT
 			}
@@ -62,6 +62,7 @@ public class CatalogApiClient {
 		String query = queryBuilder.toString();
 
 		try {
+			System.out.println("entrei na consulta");
 			return graphQlClient.document(query)
 				.retrieve("findByIds")
 				.toEntityList(ProductDTO.class);

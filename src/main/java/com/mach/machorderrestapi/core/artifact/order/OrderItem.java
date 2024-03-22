@@ -17,6 +17,10 @@ public class OrderItem extends BaseModel {
 	private BigDecimal price;
 	private int quantity;
 
+	public OrderItem() {
+		super(UUID.randomUUID(), true, LocalDateTime.now(), LocalDateTime.now());
+	}
+
 	public OrderItem(UUID productId, BigDecimal price, int quantity) {
 		super(UUID.randomUUID(), true, LocalDateTime.now(), LocalDateTime.now());
 		this.productId = productId;
@@ -34,5 +38,17 @@ public class OrderItem extends BaseModel {
 
 	public int getQuantity() {
 		return quantity;
+	}
+
+	public void setProductId(UUID productId) {
+		this.productId = productId;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

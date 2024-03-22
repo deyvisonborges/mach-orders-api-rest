@@ -7,20 +7,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMqService {
-	private final AmqpTemplate amqpTemplate;
+	private final AmqpTemplate template;
 
-	public RabbitMqService(AmqpTemplate amqpTemplate) {
-		this.amqpTemplate = amqpTemplate;
+	public RabbitMqService(AmqpTemplate template) {
+		this.template = template;
 	}
 
 	public void sendMessage(String queueName, Object message) {
 		String jsonString = null;
-
 		try {
 			jsonString = new ObjectMapper().writeValueAsString(message);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		this.amqpTemplate.convertAndSend(queueName, jsonString);
+		this.template.convertAndSend(queueName, jsonString);
 	}
 }

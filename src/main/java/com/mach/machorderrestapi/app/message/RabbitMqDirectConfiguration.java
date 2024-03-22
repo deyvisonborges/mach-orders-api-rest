@@ -1,4 +1,4 @@
-package com.mach.machorderrestapi.app.message.connection;
+package com.mach.machorderrestapi.app.message;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -6,9 +6,10 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class RabbitMqDirectConfiguration {
 	@Value("${rabbitmq.exchange.order}")
 	private String orderExchange;

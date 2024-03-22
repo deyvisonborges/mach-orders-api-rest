@@ -30,7 +30,9 @@ public class OrderJPAMapper {
 			order.getCreatedAt(),
 			order.getUpdatedAt(),
 			order.getStatus(),
-			(Set<OrderItemJPAEntity>) orderItems,
+			orderItems.stream()
+				.map(item -> new OrderItemJPAEntity())
+				.collect(Collectors.toSet()),
 			order.getCustomerId(),
 			order.getPaymentsIds(),
 			order.getSubTotal(),
