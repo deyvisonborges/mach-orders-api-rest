@@ -5,29 +5,16 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
 public class RabbitMqDirectConfiguration {
-	@Value("${rabbitmq.exchange.order}")
-	private String orderExchange;
-
 	private final AmqpAdmin amqpAdmin;
+	private final RabbitMQConstants rabbitMQConstants;
 
-//	public Queue orderQueue() {/*
-//	 * Parâmetros:
-//	 * - @param nome: Nome da fila.
-//	 * - @param durable: Indica se a fila é durável (persistente).
-//	 * - @param exclusive: Indica se a fila é exclusiva para uma conexão.
-//	 * - @param autoDelete: Indica se a fila é excluída automaticamente quando não é mais utilizada.
-//	 */
-//		return new Queue("orders.v1.order-created", true, false, false);
-//	}
-
-	public RabbitMqDirectConfiguration(AmqpAdmin amqpAdmin) {
+	public RabbitMqDirectConfiguration(AmqpAdmin amqpAdmin, RabbitMQConstants rabbitMQConstants) {
 		this.amqpAdmin = amqpAdmin;
+		this.rabbitMQConstants = rabbitMQConstants;
 	}
 
 	public Queue queue (String queueName) {
@@ -35,7 +22,7 @@ public class RabbitMqDirectConfiguration {
 	}
 
 	public DirectExchange directOrderExchange() {
-		return new DirectExchange(orderExchange);
+		return new DirectExchange(this.rabbitMQConstants.getOrderExchange());
 	}
 
 	public Binding bindQueueToExchange(Queue queue, DirectExchange exchange) {
@@ -43,14 +30,14 @@ public class RabbitMqDirectConfiguration {
 			queue.getName(),
 			Binding.DestinationType.QUEUE,
 			exchange.getName(),
-			queue.getName(), // routing key aqui, é o próprio nome da fila
+			queue.getName(),
 			null
 		);
 	}
 
 	@PostConstruct
 	private void addQueues() {
-		var orderQueue = this.queue("order-queue");
+		var orderQueue = this.queue(this.rabbitMQConstants.getOrderQueue());
 		var orderExchange = this.directOrderExchange();
 		var orderBinding = this.bindQueueToExchange(orderQueue, directOrderExchange());
 

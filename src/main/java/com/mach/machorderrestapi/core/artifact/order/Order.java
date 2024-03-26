@@ -3,6 +3,7 @@ package com.mach.machorderrestapi.core.artifact.order;
 import com.mach.machorderrestapi.common.base.BaseModel;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -110,5 +111,21 @@ public class Order extends BaseModel {
 
   public void setTotal(double total) {
     this.total = total;
+  }
+
+  /*
+  * Utils
+  * */
+  public static Order factoryEmptyOrder() {
+    return new Order(
+      null,
+      new HashSet<>(), // items
+      null,
+      new HashSet<>(), // paymentsIds
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    );
   }
 }
