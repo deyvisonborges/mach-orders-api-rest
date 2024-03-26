@@ -1,6 +1,5 @@
 package com.mach.machorderrestapi.app.integrations.api.identity;
 
-import com.mach.machorderrestapi.app.integrations.IntegrationClients;
 import com.mach.machorderrestapi.app.integrations.api.identity.dto.CustomerDTO;
 import com.mach.machorderrestapi.shared.exception.IntegrationException;
 import org.springframework.beans.factory.annotation.Value;

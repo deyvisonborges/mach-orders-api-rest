@@ -1,9 +1,9 @@
 package com.mach.machorderrestapi.core.artifact.order;
 
 public enum OrderStatus {
-    ORDER_PLACED("PEDIDO_REALIZADO"),
-    PROCESSING("PROCESSANDO"),
-    PREPARING_FOR_SHIPPING("PREPARANDO_PARA_ENVIO"),
+    CREATED("CRIADO"),
+    UPDATED("ATUALIZADO"),
+    CANCELLED("CANCELADO"),
     SENT("ENVIADO"),
     DELIVERED("ENTREGUE");
 
